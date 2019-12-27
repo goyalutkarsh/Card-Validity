@@ -1,0 +1,88 @@
+//program to display number of days in a year
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+//sub
+bool isValid(const string & cardNumber);
+int sumOfDoubleEvenPlace (const string & cardNumber);
+int getDigit(int number);
+int sumOfOddPlace(const string & cardNumber);
+bool startWith (const string& cardNumber, const string & substr);
+
+//code
+int main()
+{
+    cout<<"Enter your card number: "<<endl;
+    string cardNumber;
+    cin>>cardNumber;
+    
+    if(isValid(cardNumber))
+    cout<<"Your card is valid";
+    else
+    cout<<"Your card is not valid";
+}
+
+//function to check validity of card
+bool isValid(const string& cardNumber)
+{
+    if(cardNumber.length()>=13 && cardNumber.length()<=16)
+    {
+      
+      if(startWith(cardNumber,cardNumber.substr(0,2)))
+      {
+        int sumSecondDigit = 0;
+        for(int i = cardNumber.length() - 2; i >=0; i -= 2)
+        {
+          //adding all single digit from even places
+          sumSecondDigit += getDigit(cardNumber[i] - '0');
+        }
+
+        //checking the sum
+        int totalSum = sumSecondDigit + sumOfOddPlace(cardNumber);
+    
+        if(totalSum % 10 == 0)
+            return true;
+        else
+            return false;
+      }
+      else
+        return false;
+    }
+    else
+      return false;
+    
+}
+
+//checking the prefixes
+bool startWith (const string& cardNumber, const string& substr)
+{
+  //cout << substr << endl;
+  if(substr[0]=='4'||substr[0]=='5'||substr[0]=='6'||(substr[0]=='3'&&substr[1]=='7'))
+    return true;
+  else 
+    return false;
+}
+
+//function of get single digits of two time the digit at even places
+int getDigit(int number)
+{
+    number=number*2;
+    if (number>9)//if two digit
+      return (number%10)+(number/10);
+    else
+      return number;
+}
+
+//fucntion to add digits at odd places
+int sumOfOddPlace(const string & cardNumber)
+{
+    int sumOddDigits=0;
+    for(int i=cardNumber.length()-1; i>=0;i-=2)
+    {
+      sumOddDigits+= (cardNumber[i] - '0');
+    }
+    return sumOddDigits;
+}
+
